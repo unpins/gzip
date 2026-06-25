@@ -79,6 +79,12 @@
       inherit self;
       name = "gzip";
 
+      # Build via the unpin-llvm engine + emit a bitcode multicall module.
+      engine = "unpin-llvm";
+      multicall = {
+        programs = [{ name = "gzip"; aliases = [ "gunzip" "zcat" "uncompress" ]; }];
+      };
+
       # gzip --version exits 0 and prints the version banner to stdout.
       smoke = [ "--version" ];
       smokePattern = "1\\.14";
