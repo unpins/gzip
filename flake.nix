@@ -59,19 +59,6 @@
           sed -i 's/^# *define GNU_STANDARD 1$/# define GNU_STANDARD 0/' gzip.c
           grep -q '^# define GNU_STANDARD 0$' gzip.c
         '';
-        # Force the C `longest_match` over the optional i386 asm (lib/match.c).
-        # That asm body is gated `(i386…) && !__x86_64__`, so it's empty on every
-        # arch EXCEPT 32-bit x86 — where it builds a native `match.o` the LLVM
-        # engine can't turn into bitcode. The object lands in the multicall
-        # module's `module_native.a` and references deflate.c globals (prev/
-        # window/strstart/…) by plain name; the mega's `opt -internalize` keeps
-        # only gzip's entry trampoline and internalizes those globals, so match.o
-        # goes undefined → the i686 mega-link fails. Pinning the configure cache
-        # var makes the module pure bitcode on i686 too, matching every other
-        # arch (no-op where the probe already resolves to "no").
-        preConfigure = (old.preConfigure or "") + ''
-          export gzip_cv_assembler=no
-        '';
         preFixup = "";
         postInstall = (old.postInstall or "") + ''
           for o in $outputs; do
