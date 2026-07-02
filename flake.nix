@@ -36,6 +36,9 @@
       #     gzip stays the bare ELF, not a shell wrapper;
       #   * prune bin/ to just `gzip` (+ `gzip.exe`) and man1/ to the 3 pages.
       tuneGzip = drv: drv.overrideAttrs (old: {
+        # Run gzip's upstream test suite on native runners; auto-skips on every
+        # cross (build can't execute host). All 30 tests pass under static-musl.
+        doCheck = drv.stdenv.buildPlatform.canExecute drv.stdenv.hostPlatform;
         # Drop nixpkgs' only buildInputs entry, runtimeShellPackage (bash): it
         # exists solely so the installed zcat/zgrep/zless *shell scripts* get a
         # runtime shell — but we delete those scripts (single-binary policy), so
