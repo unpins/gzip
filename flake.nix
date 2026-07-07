@@ -58,9 +58,18 @@
         # (`#if !GNU_STANDARD`) is compiled in. Done in-source rather than via
         # NIX_CFLAGS_COMPILE because gzip's derivation uses `env`, which mustn't
         # overlap the pipeline's own top-level NIX_CFLAGS_COMPILE.
+        # Drop the flaky `pipe-output` test: it compares gzip's exit status to
+        # cat's when writing to an already-closed pipe (`... | :`) after a
+        # `sleep 0.01`, a SIGPIPE timing race upstream itself flags as
+        # timing-sensitive (the "cat/grep: write error: Broken pipe" lines are
+        # the test's own expected writes). On a loaded native runner the two
+        # sides can land on different statuses and it fails — it lost the race
+        # on aarch64. Same class as patch's `bad-filenames`. The other 29 run;
+        # the shipped binary is unaffected (tests/ isn't compiled in).
         postPatch = (old.postPatch or "") + ''
           sed -i 's/^# *define GNU_STANDARD 1$/# define GNU_STANDARD 0/' gzip.c
           grep -q '^# define GNU_STANDARD 0$' gzip.c
+          sed -i '/^[[:space:]]*pipe-output[[:space:]]*\\$/d' tests/Makefile.am tests/Makefile.in
         '';
         preFixup = "";
         postInstall = (old.postInstall or "") + ''
