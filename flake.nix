@@ -94,7 +94,7 @@
       # Build via the unpin-llvm engine + emit a bitcode multicall module.
       engine = "unpin-llvm";
       multicall = {
-        programs = [{ name = "gzip"; aliases = [ "gunzip" "zcat" "uncompress" ]; }];
+        programs = [{ name = "gzip"; inherit aliases; }];
       };
 
       # gzip --version exits 0 and prints the version banner to stdout.
@@ -102,11 +102,9 @@
       smokePattern = "1\\.14";
 
       build = pkgs:
-        lib.withAliases pkgs { primary = "gzip"; inherit aliases; }
-          (tuneGzip pkgs.pkgsStatic.gzip);
+        tuneGzip pkgs.pkgsStatic.gzip;
 
       windowsBuild = pkgs:
-        lib.withAliases pkgs { primary = "gzip.exe"; inherit aliases; }
-          (tuneGzip (lib.mingwStaticCross pkgs).gzip);
+        tuneGzip (lib.mingwStaticCross pkgs).gzip;
     };
 }
