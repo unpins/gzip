@@ -9,7 +9,7 @@
 
 Part of the [unpins](https://unpins.org) catalog; install it with [`unpin`](https://github.com/unpins/unpin): `unpin install gzip`.
 
-One `gzip` binary that also answers to `gunzip`, `zcat` and `uncompress` — the mode is picked from the command name (argv[0]), exactly how GNU gzip's own `gunzip`/`zcat` behave. The `z*` shell-script companions (`zcmp`, `zdiff`, `zgrep`, `zless`, `zmore`, `znew`, `gzexe`) need an external shell plus `cmp`/`grep`/`sed`/`less`, so they are dropped — the same single-binary policy as bzip2/xz.
+One `gzip` binary that also answers to `gunzip`, `zcat` and `uncompress` — the mode is picked from the command name, exactly how GNU gzip's own `gunzip`/`zcat` behave. The `z*` shell-script companions (`zcmp`, `zdiff`, `zgrep`, `zless`, `zmore`, `znew`, `gzexe`) need an external shell plus `cmp`/`grep`/`sed`/`less`, so they are dropped — the same single-binary policy as bzip2/xz.
 
 ## Usage
 
