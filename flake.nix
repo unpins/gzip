@@ -23,7 +23,9 @@
   outputs = { self, unpins-lib }:
     let
       lib = unpins-lib.lib;
-      aliases = [ "gunzip" "zcat" "uncompress" ];
+      # `uncompress` is documented inside gunzip.1 and has no page of its own
+      # (see manKeep below, which has always said so).
+      aliases = [ "gunzip" "zcat" { name = "uncompress"; noMan = true; } ];
       # Pages we keep: the program + the two aliases that have their own page
       # (uncompress is documented inside gunzip.1, no standalone page).
       manKeep = [ "gzip" "gunzip" "zcat" ];
