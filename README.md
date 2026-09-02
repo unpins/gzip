@@ -1,6 +1,6 @@
 # gzip
 
-[gzip](https://www.gnu.org/software/gzip/) — the GNU compression utility. A single self-contained binary, built natively for Linux, macOS, and Windows.
+[gzip](https://www.gnu.org/software/gzip/) — the GNU compression program. A single self-contained binary, built natively for Linux, macOS, and Windows.
 
 [![CI](https://github.com/unpins/gzip/actions/workflows/gzip.yml/badge.svg)](https://github.com/unpins/gzip/actions)
 ![Linux](https://img.shields.io/badge/Linux-✓-success?logo=linux&logoColor=white)
