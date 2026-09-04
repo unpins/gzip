@@ -29,6 +29,10 @@ unpin install gzip
 
 Installing also creates the `gunzip`, `zcat` and `uncompress` commands alongside `gzip`.
 
+## Man pages
+
+The `gzip`, `gunzip` and `zcat` pages are embedded in the binary — read them with `unpin man gzip`, `unpin man gzip gunzip` and `unpin man gzip zcat`.
+
 ## Build locally
 
 ```bash
@@ -50,7 +54,5 @@ The [Releases](https://github.com/unpins/gzip/releases) page has standalone bina
 
 ## Build notes
 
-- **Platforms:** Linux, macOS, Windows.
-- **Windows:** mingw cross — a self-contained PE32+ `.exe`.
+- **Windows:** a single `gzip.exe` targeting the mingw-w64 runtime — no companion DLLs.
 - **argv[0] mode detection** is compiled in with `-DGNU_STANDARD=0`; stock gzip hides that block behind `GNU_STANDARD=1` and relies on the dropped shell scripts instead.
-- **Man pages:** embedded in the binary, read with `unpin man gzip` (the `gzip`, `gunzip` and `zcat` pages).
