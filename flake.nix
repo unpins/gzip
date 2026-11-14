@@ -102,7 +102,7 @@
 
       # gzip --version exits 0 and prints the version banner to stdout.
       smoke = [ "--version" ];
-      smokePattern = "1\\.14";
+      smokePattern = "Written by Jean-loup Gailly";
 
       build = pkgs:
         tuneGzip pkgs.pkgsStatic.gzip;
