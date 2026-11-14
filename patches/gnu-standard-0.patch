@@ -1,0 +1,24 @@
+Compile gzip's argv[0] mode detection back in.
+
+gzip.c picks the mode from the command name (gunzip -> decompress, zcat ->
+decompress to stdout, uncompress -> decompress) only inside `#if
+!GNU_STANDARD`, and GNU_STANDARD defaults to 1, so a stock build leaves that
+block out and relies on the gunzip/zcat/uncompress shell scripts. We drop the
+scripts and ship one `gzip` binary with gunzip/zcat/uncompress as aliases, so
+the default is flipped to 0 in the source.
+
+It is not passed as -DGNU_STANDARD=0 because gzip's nixpkgs derivation sets
+its flags through `env`, which must not overlap the pipeline's own top-level
+NIX_CFLAGS_COMPILE.
+
+--- a/gzip.c
++++ b/gzip.c
+@@ -429,7 +429,7 @@
+     opterr = !env;
+ 
+ #ifndef GNU_STANDARD
+-# define GNU_STANDARD 1
++# define GNU_STANDARD 0
+ #endif
+ #if !GNU_STANDARD
+     /* For compatibility with old compress, use program name as an option.

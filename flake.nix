@@ -68,11 +68,10 @@
         # sides can land on different statuses and it fails — it lost the race
         # on aarch64. Same class as patch's `bad-filenames`. The other 29 run;
         # the shipped binary is unaffected (tests/ isn't compiled in).
-        postPatch = (old.postPatch or "") + ''
-          sed -i 's/^# *define GNU_STANDARD 1$/# define GNU_STANDARD 0/' gzip.c
-          grep -q '^# define GNU_STANDARD 0$' gzip.c
-          sed -i '/^[[:space:]]*pipe-output[[:space:]]*\\$/d' tests/Makefile.am tests/Makefile.in
-        '';
+        patches = (old.patches or [ ]) ++ [
+          ./patches/gnu-standard-0.patch
+          ./patches/drop-pipe-output-test.patch
+        ];
         preFixup = "";
         postInstall = (old.postInstall or "") + ''
           for o in $outputs; do
