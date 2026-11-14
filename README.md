@@ -9,7 +9,7 @@
 
 Part of the [unpins](https://unpins.org) catalog; install it with [`unpin`](https://github.com/unpins/unpin): `unpin install gzip`.
 
-One `gzip` binary that also answers to `gunzip`, `zcat` and `uncompress` — the mode is picked from the command name, exactly how GNU gzip's own `gunzip`/`zcat` behave. The `z*` shell-script companions (`zcmp`, `zdiff`, `zgrep`, `zless`, `zmore`, `znew`, `gzexe`) need an external shell plus `cmp`/`grep`/`sed`/`less`, so they are dropped — the same single-binary policy as bzip2/xz.
+One `gzip` binary that also answers to `gunzip`, `zcat` and `uncompress` — the mode is picked from the command name, exactly how GNU gzip's own `gunzip`/`zcat` behave.
 
 ## Usage
 
@@ -54,5 +54,7 @@ The [Releases](https://github.com/unpins/gzip/releases) page has standalone bina
 
 ## Build notes
 
-- **Windows:** a single `gzip.exe` targeting the mingw-w64 runtime — no companion DLLs.
-- **argv[0] mode detection** is compiled in with `-DGNU_STANDARD=0`; stock gzip hides that block behind `GNU_STANDARD=1` and relies on the dropped shell scripts instead.
+- **Windows:** built with mingw-w64.
+- **argv[0] mode detection** is compiled in by a patch that sets `GNU_STANDARD` to 0 in `gzip.c`; stock gzip leaves that block out (`GNU_STANDARD` defaults to 1) and relies on the dropped shell scripts instead.
+- **Not included:** the shell-script companions `zcmp`, `zdiff`, `zegrep`, `zfgrep`, `zforce`, `zgrep`, `zless`, `zmore`, `znew` and `gzexe` (they need an external shell plus `cmp`/`grep`/`sed`/`less`).
+- **Tests:** gzip's test suite runs on native builds (0 failures under static-musl; the timing-sensitive `pipe-output` test is dropped by a patch) and is skipped on cross targets the build host can't execute.
